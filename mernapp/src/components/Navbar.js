@@ -30,9 +30,40 @@ export default function Navbar() {
       return;
     }
 
-    console.log('Checkout clicked', cartItems);
-    dispatch({ type: "DROP" });
-    setShowCheckoutMessage(true);
+    let userEmail = localStorage.getItem("userEmail");
+    if (!userEmail) {
+      alert("Please login to place an order!");
+      return;
+    }
+
+    console.log('Finalizing order for:', userEmail);
+
+    try {
+      let response = await fetch("http://localhost:5000/api/orderData", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          order_data: cartItems,
+          email: userEmail,
+          order_date: new Date().toDateString()
+        })
+      });
+
+      console.log("Order response status:", response.status);
+      const json = await response.json();
+
+      if (json.success) {
+        dispatch({ type: "DROP" });
+        setShowCheckoutMessage(true);
+      } else {
+        alert("Failed to place order: " + (json.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Checkout Error:", error);
+      alert("Network Error! Please check your connection.");
+    }
   }
 
   return (
@@ -249,17 +280,17 @@ export default function Navbar() {
           <Link className="navbar-brand navbar-brand-custom" to="/">
             🍔 GoFood
           </Link>
-          
-          <button 
-            className="navbar-toggler border-0" 
-            type="button" 
-            data-bs-toggle="collapse" 
+
+          <button
+            className="navbar-toggler border-0"
+            type="button"
+            data-bs-toggle="collapse"
             data-bs-target="#navbarNavAltMarkup"
             style={{ boxShadow: 'none' }}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          
+
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className='nav-item'>
@@ -274,8 +305,47 @@ export default function Navbar() {
               </li>
             </ul>
 
+            <div className='d-flex align-items-center me-3'>
+              {(localStorage.getItem("authToken")) ?
+                <div className='d-flex align-items-center' style={{
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  padding: '5px 15px',
+                  borderRadius: '25px',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  backdropFilter: 'blur(5px)'
+                }}>
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    backgroundColor: '#fff',
+                    color: '#28a745',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: '10px',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                  }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </div>
+                  <span style={{
+                    cursor: "default",
+                    color: "#fff",
+                    fontWeight: '600',
+                    fontSize: '0.95rem'
+                  }}>
+                    {localStorage.getItem("userName") || "User"}
+                  </span>
+                </div>
+                : ""
+              }
+            </div>
+
             <div className='d-flex flex-column flex-lg-row gap-2'>
-              <button 
+              <button
                 className='btn btn-cart'
                 onClick={() => setCartView(true)}
               >
@@ -286,9 +356,9 @@ export default function Navbar() {
                   </Badge>
                 )}
               </button>
-              
-              <button 
-                className='btn btn-logout' 
+
+              <button
+                className='btn btn-logout'
                 onClick={handleLogout}
               >
                 🚪 Logout
@@ -296,12 +366,12 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-      </nav>
+      </nav >
 
       {cartView && (
         <Modal onClose={() => setCartView(false)}>
           <div className='container m-auto mt-2 table-responsive'>
-            
+
             {showMessage && (
               <div className="alert alert-warning warning-alert text-center mb-4" style={{
                 borderRadius: '12px',
@@ -312,27 +382,27 @@ export default function Navbar() {
                 ⚠️ Your cart is empty! Please add items before checkout.
               </div>
             )}
-            
+
             {showCheckoutMessage ? (
               <div className="success-message text-center">
                 <div className="success-icon mb-4">✅</div>
-                <h1 style={{ 
-                  color: '#155724', 
-                  marginBottom: '20px', 
+                <h1 style={{
+                  color: '#155724',
+                  marginBottom: '20px',
                   fontSize: '2.5rem',
                   fontWeight: '800'
                 }}>
                   Order Placed Successfully!
                 </h1>
-                <p style={{ 
-                  color: '#155724', 
-                  fontSize: '1.3rem', 
+                <p style={{
+                  color: '#155724',
+                  fontSize: '1.3rem',
                   marginBottom: '30px',
                   fontWeight: '500'
                 }}>
                   Thank you for your order! Your delicious food is on its way! 🚀
                 </p>
-                <button 
+                <button
                   className='btn btn-success btn-lg px-5 py-3'
                   onClick={() => {
                     setShowCheckoutMessage(false);
@@ -387,8 +457,8 @@ export default function Navbar() {
                           ₹{food.price}
                         </td>
                         <td style={{ padding: '15px' }}>
-                          <button 
-                            type="button" 
+                          <button
+                            type="button"
                             className="btn btn-remove p-0 text-danger border-0 bg-transparent"
                             onClick={() => handleRemove(index)}
                             style={{ fontSize: '1.5rem' }}
@@ -400,14 +470,14 @@ export default function Navbar() {
                     ))}
                   </tbody>
                 </table>
-                
+
                 <div className='text-end mb-4' style={{
                   padding: '20px',
                   background: 'linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(32, 201, 151, 0.1))',
                   borderRadius: '12px',
                   border: '2px solid rgba(40, 167, 69, 0.2)'
                 }}>
-                  <h3 style={{ 
+                  <h3 style={{
                     fontWeight: '800',
                     fontSize: '2rem',
                     color: '#28a745',
@@ -416,10 +486,10 @@ export default function Navbar() {
                     Total: ₹{totalPrice}/-
                   </h3>
                 </div>
-                
+
                 <div className='text-center'>
-                  <button 
-                    className='btn btn-success btn-lg px-5 py-3' 
+                  <button
+                    className='btn btn-success btn-lg px-5 py-3'
                     onClick={handleCheckOut}
                     style={{
                       borderRadius: '12px',
@@ -438,7 +508,8 @@ export default function Navbar() {
             )}
           </div>
         </Modal>
-      )}
+      )
+      }
     </>
   )
 }

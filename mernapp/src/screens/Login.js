@@ -26,8 +26,8 @@ export default function Login() {
     // Real-time validation
     const getFieldError = (field) => {
         if (!touched[field]) return null;
-        
-        switch(field) {
+
+        switch (field) {
             case 'email':
                 if (credentials.email.length === 0) return "Email is required";
                 if (!credentials.email.includes("@")) return "Please enter a valid email";
@@ -86,7 +86,7 @@ export default function Login() {
             if (!json.success) {
                 // Show specific error from backend
                 if (json.errors && Array.isArray(json.errors)) {
-                    const errorMessages = json.errors.map(err => 
+                    const errorMessages = json.errors.map(err =>
                         err.msg || err.message || JSON.stringify(err)
                     );
                     setErrors(errorMessages);
@@ -99,10 +99,11 @@ export default function Login() {
                 // Success - store auth data
                 localStorage.setItem("userEmail", credentials.email);
                 localStorage.setItem("authToken", json.authToken);
-                
+                localStorage.setItem("userName", json.userName || credentials.email.split("@")[0]);
+
                 // Show success message
                 setSuccessMessage("Login successful! Redirecting...");
-                
+
                 // Redirect after short delay
                 setTimeout(() => {
                     window.location.href = "/";
@@ -127,16 +128,16 @@ export default function Login() {
 
     const isFormValid = () => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credentials.email) &&
-               credentials.password.length >= 5;
+            credentials.password.length >= 5;
     };
 
     return (
         <div style={{ backgroundColor: '#000000', minHeight: '100vh', color: 'white' }}>
             <div style={{ padding: '80px 20px 60px' }}>
                 <div style={{ maxWidth: '480px', margin: '0 auto' }}>
-                    <div style={{ 
-                        backgroundColor: '#1a1a1a', 
-                        padding: '40px', 
+                    <div style={{
+                        backgroundColor: '#1a1a1a',
+                        padding: '40px',
                         borderRadius: '12px',
                         border: '1px solid #333',
                         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
@@ -147,10 +148,10 @@ export default function Login() {
                         <p style={{ textAlign: 'center', marginBottom: '32px', color: '#999', fontSize: '0.95rem' }}>
                             Sign in to continue to your account
                         </p>
-                        
+
                         {/* Success message */}
                         {successMessage && (
-                            <div 
+                            <div
                                 role="alert"
                                 style={{
                                     backgroundColor: '#1a3a1a',
@@ -171,7 +172,7 @@ export default function Login() {
 
                         {/* Display errors */}
                         {errors.length > 0 && (
-                            <div 
+                            <div
                                 role="alert"
                                 style={{
                                     backgroundColor: '#2a1315',
@@ -192,16 +193,16 @@ export default function Login() {
                                 ))}
                             </div>
                         )}
-                        
+
                         <div onSubmit={handleSubmit}>
                             <div style={{ marginBottom: '20px' }}>
                                 <label htmlFor="email" style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
                                     Email Address
                                 </label>
-                                <input 
-                                    type="email" 
-                                    name='email' 
-                                    value={credentials.email} 
+                                <input
+                                    type="email"
+                                    name='email'
+                                    value={credentials.email}
                                     onChange={onChange}
                                     onBlur={() => onBlur('email')}
                                     id="email"
@@ -253,10 +254,10 @@ export default function Login() {
                                     </button>
                                 </div>
                                 <div style={{ position: 'relative' }}>
-                                    <input 
+                                    <input
                                         type={showPassword ? "text" : "password"}
-                                        name='password' 
-                                        value={credentials.password} 
+                                        name='password'
+                                        value={credentials.password}
                                         onChange={onChange}
                                         onBlur={() => onBlur('password')}
                                         id="password"
@@ -305,7 +306,7 @@ export default function Login() {
                             </div>
 
                             <div>
-                                <button 
+                                <button
                                     type="button"
                                     onClick={handleSubmit}
                                     disabled={loading || !isFormValid()}
@@ -332,11 +333,11 @@ export default function Login() {
                                         "Sign In"
                                     )}
                                 </button>
-                                
+
                                 <div style={{ textAlign: 'center', margin: '16px 0' }}>
                                     <span style={{ color: '#999', fontSize: '0.9rem' }}>Don't have an account?</span>
                                 </div>
-                                
+
                                 <button
                                     type="button"
                                     onClick={() => window.location.href = '/createuser'}
@@ -356,9 +357,9 @@ export default function Login() {
                                     Create New Account
                                 </button>
 
-                                <div style={{ 
-                                    marginTop: '24px', 
-                                    paddingTop: '24px', 
+                                <div style={{
+                                    marginTop: '24px',
+                                    paddingTop: '24px',
                                     borderTop: '1px solid #333',
                                     textAlign: 'center'
                                 }}>

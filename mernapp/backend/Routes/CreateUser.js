@@ -24,9 +24,9 @@ router.post("/createuser", [
         // Check if email already exists
         let existingUser = await User.findOne({ email: req.body.email.toLowerCase() });
         if (existingUser) {
-            return res.status(400).json({ 
-                success: false, 
-                message: "Email already registered. Please login or use a different email." 
+            return res.status(400).json({
+                success: false,
+                message: "Email already registered. Please login or use a different email."
             });
         }
 
@@ -43,25 +43,25 @@ router.post("/createuser", [
         });
 
         console.log("✅ New user created:", newUser.email);
-        return res.json({ 
-            success: true, 
-            message: "User created successfully! Please login." 
+        return res.json({
+            success: true,
+            message: "User created successfully! Please login."
         });
 
     } catch (error) {
         console.error("❌ Error in createuser:", error.message);
-        
+
         // Handle duplicate key error
         if (error.code === 11000) {
-            return res.status(400).json({ 
-                success: false, 
-                message: "Email already registered. Please use a different email." 
+            return res.status(400).json({
+                success: false,
+                message: "Email already registered. Please use a different email."
             });
         }
 
-        return res.status(500).json({ 
-            success: false, 
-            message: "Server error: " + error.message 
+        return res.status(500).json({
+            success: false,
+            message: "Server error: " + error.message
         });
     }
 });
@@ -83,18 +83,18 @@ router.post("/loginuser", [
         let userData = await User.findOne({ email });
 
         if (!userData) {
-            return res.status(400).json({ 
-                success: false, 
-                message: "User not found. Please create an account first." 
+            return res.status(400).json({
+                success: false,
+                message: "User not found. Please create an account first."
             });
         }
 
         const pwdCompare = await bcrypt.compare(req.body.password, userData.password);
 
         if (!pwdCompare) {
-            return res.status(400).json({ 
-                success: false, 
-                message: "Invalid password. Please try again." 
+            return res.status(400).json({
+                success: false,
+                message: "Invalid password. Please try again."
             });
         }
 
@@ -106,19 +106,20 @@ router.post("/loginuser", [
         };
 
         const authToken = jwt.sign(data, jwtSecret);
-        
+
         console.log("✅ User logged in:", email);
-        return res.json({ 
-            success: true, 
+        return res.json({
+            success: true,
             authToken: authToken,
+            userName: userData.name,
             message: "Login successful!"
         });
 
     } catch (error) {
         console.error("❌ Error in loginuser:", error.message);
-        return res.status(500).json({ 
-            success: false, 
-            message: "Server error: " + error.message 
+        return res.status(500).json({
+            success: false,
+            message: "Server error: " + error.message
         });
     }
 });

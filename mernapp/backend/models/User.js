@@ -25,10 +25,13 @@ const UserSchema = new Schema({
     date: {
         type: Date,
         default: Date.now
+    },
+    order_data: {
+        type: Array,
+        default: []
     }
-})
+}, { bufferCommands: false })
 
-// Create index for email
-UserSchema.index({ email: 1 }, { unique: true });
+
 
 module.exports = mongoose.model('user', UserSchema);

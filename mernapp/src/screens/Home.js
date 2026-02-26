@@ -32,7 +32,7 @@ export default function Home() {
 
       const uniqueCategories = [...new Set(foodItems.map(item => item.CategoryName))]
         .map(categoryName => ({ CategoryName: categoryName }));
-      
+
       setFoodCat(uniqueCategories);
       setError(null);
     } catch (error) {
@@ -77,7 +77,7 @@ export default function Home() {
             <div style={{ fontSize: '4rem', marginBottom: '20px' }}>😔</div>
             <h3 className="text-white mb-3">Oops! Something went wrong</h3>
             <p className="text-light mb-4">{error}</p>
-            <button 
+            <button
               className="btn btn-success btn-lg px-5"
               onClick={() => loadData()}
               style={{ borderRadius: '10px', fontWeight: '600' }}
@@ -100,8 +100,8 @@ export default function Home() {
         {foodCat && foodCat.length > 0 ? (
           foodCat.map((data, index) => {
             const filteredItems = foodItem.filter(
-              (item) => item.CategoryName === data.CategoryName && 
-              item.name.toLowerCase().includes(search.toLowerCase())
+              (item) => item.CategoryName === data.CategoryName &&
+                item.name.toLowerCase().includes(search.toLowerCase())
             );
 
             if (filteredItems.length === 0 && search) return null;
@@ -114,12 +114,12 @@ export default function Home() {
                   </h2>
                 </div>
                 <hr className="category-divider" />
-                
+
                 <div className="row g-4">
                   {filteredItems.length > 0 ? (
                     filteredItems.map(filterItems => (
                       <div key={filterItems._id} className="col-12 col-sm-6 col-lg-4 col-xl-3">
-                        <Card 
+                        <Card
                           name={filterItems.name}
                           CategoryName={filterItems.CategoryName}
                           img={filterItems.img}
@@ -148,7 +148,7 @@ export default function Home() {
             <div className="empty-state-icon">🍽️</div>
             <h3 className="text-white mb-3">No Menu Available</h3>
             <p className="text-light mb-4">Please check back later for our delicious offerings</p>
-            <button 
+            <button
               className="btn btn-success btn-lg px-5"
               onClick={() => loadData()}
               style={{ borderRadius: '10px', fontWeight: '600' }}
@@ -412,7 +412,7 @@ const CarouselSection = React.memo(({ search, setSearch }) => {
           }
         `}
       </style>
-      
+
       <div className="hero-section">
         <div
           id="carouselExample"
@@ -423,40 +423,40 @@ const CarouselSection = React.memo(({ search, setSearch }) => {
         >
           <div className="carousel-inner position-relative">
             <div className="hero-overlay"></div>
-            
+
             <div className="carousel-item active">
               <img
                 src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1920&q=80"
                 className="d-block w-100"
                 alt="Gourmet Burger"
-                style={{ 
-                  height: 'clamp(500px, 80vh, 850px)', 
+                style={{
+                  height: 'clamp(500px, 80vh, 850px)',
                   objectFit: 'cover',
                   objectPosition: 'center'
                 }}
               />
             </div>
-            
+
             <div className="carousel-item">
               <img
                 src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1920&q=80"
                 className="d-block w-100"
                 alt="Italian Pizza"
-                style={{ 
-                  height: 'clamp(500px, 80vh, 850px)', 
+                style={{
+                  height: 'clamp(500px, 80vh, 850px)',
                   objectFit: 'cover',
                   objectPosition: 'center'
                 }}
               />
             </div>
-            
+
             <div className="carousel-item">
               <img
                 src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1920&q=80"
                 className="d-block w-100"
                 alt="Healthy Bowl"
-                style={{ 
-                  height: 'clamp(500px, 80vh, 850px)', 
+                style={{
+                  height: 'clamp(500px, 80vh, 850px)',
                   objectFit: 'cover',
                   objectPosition: 'center'
                 }}
@@ -465,24 +465,26 @@ const CarouselSection = React.memo(({ search, setSearch }) => {
 
             <div
               className="position-absolute start-50 translate-middle-x search-container"
-              style={{ 
-                zIndex: 20, 
-                width: '100%', 
-                maxWidth: '800px', 
+              style={{
+                zIndex: 20,
+                width: '100%',
+                maxWidth: '800px',
                 bottom: '20%',
                 padding: '0 20px'
               }}
             >
               <div className="text-center mb-4">
-                <h1 className="text-white mb-2" style={{ 
+                <h1 className="text-white mb-2" style={{
                   fontSize: 'clamp(2rem, 5vw, 3.5rem)',
                   fontWeight: '800',
                   textShadow: '0 4px 20px rgba(0,0,0,0.5)',
                   letterSpacing: '-1px'
                 }}>
-                  Delicious Food, Delivered
+                  {localStorage.getItem("authToken")
+                    ? `Welcome back, ${localStorage.getItem("userName") || "Friend"}!`
+                    : "Delicious Food, Delivered"}
                 </h1>
-                <p className="text-white" style={{ 
+                <p className="text-white" style={{
                   fontSize: 'clamp(1rem, 2vw, 1.3rem)',
                   textShadow: '0 2px 10px rgba(0,0,0,0.5)',
                   opacity: 0.95
@@ -490,13 +492,13 @@ const CarouselSection = React.memo(({ search, setSearch }) => {
                   Order your favorite meals in minutes
                 </p>
               </div>
-              
+
               <div className="d-flex gap-3">
                 <input
                   className="form-control search-input"
                   type="search"
                   placeholder="Search for dishes, cuisines, restaurants..."
-                  value={search} 
+                  value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   style={{
                     fontSize: 'clamp(15px, 2vw, 17px)',

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Order = require('../models/Orders');
+const User = require('../models/User');
 
 // ============ CREATE/UPDATE ORDER ============
 router.post('/orderData', async (req, res) => {
@@ -27,37 +27,34 @@ router.post('/orderData', async (req, res) => {
     // Add order date at the start
     const data = [{ Order_date: order_date }, ...order_data];
 
-    // Check if user already has orders
-    console.log("2️⃣  Checking for existing orders...");
-    let existingOrder = await Order.findOne({ email: email.toLowerCase() });
+    // Check if user exists and update order_data
+    console.log("2️⃣  Updating user order history...");
+    let user = await User.findOneAndUpdate(
+      { email: email.toLowerCase() },
+      { $push: { order_data: data } },
+      { new: true }
+    );
 
-    if (!existingOrder) {
-      console.log("3️⃣  Creating new order document...");
-      await Order.create({
-        email: email.toLowerCase(),
-        order_data: [data],
+    if (!user) {
+      console.log("❌ User not found");
+      return res.status(404).json({
+        success: false,
+        message: "User not found. Please register first.",
       });
-      console.log("✅ New order created for:", email);
-    } else {
-      console.log("3️⃣  Updating existing order document...");
-      await Order.findOneAndUpdate(
-        { email: email.toLowerCase() },
-        { $push: { order_data: data } }
-      );
-      console.log("✅ Order updated for:", email);
     }
 
+    console.log("✅ Order saved to user document for:", email);
     console.log("═══════════════════════════════════════\n");
 
-    return res.json({ 
-      success: true, 
-      message: "Order placed successfully!" 
+    return res.json({
+      success: true,
+      message: "Order placed successfully!"
     });
 
   } catch (error) {
     console.error("❌ Error in /orderData:", error.message);
     console.error("═══════════════════════════════════════\n");
-    
+
     return res.status(500).json({
       success: false,
       message: "Server Error: " + error.message,
@@ -82,29 +79,28 @@ router.post('/myorderData', async (req, res) => {
     }
 
     console.log("1️⃣  Fetching orders for:", req.body.email);
-    const myData = await Order.findOne({ email: req.body.email.toLowerCase() });
-    
-    if (!myData) {
-      console.log("⚠️  No orders found for this user");
-      return res.json({ 
-        success: true,
-        orderData: null,
-        message: "No orders found"
+    const userData = await User.findOne({ email: req.body.email.toLowerCase() });
+
+    if (!userData) {
+      console.log("❌ User not found");
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
       });
     }
 
-    console.log("✅ Orders found:", myData.order_data.length, "orders");
+    console.log("✅ Orders found:", userData.order_data ? userData.order_data.length : 0, "orders");
     console.log("═══════════════════════════════════════\n");
 
-    return res.json({ 
+    return res.json({
       success: true,
-      orderData: myData
+      orderData: userData // This contains order_data array
     });
 
   } catch (error) {
     console.error("❌ Error in /myorderData:", error.message);
     console.error("═══════════════════════════════════════\n");
-    
+
     return res.status(500).json({
       success: false,
       message: "Server Error: " + error.message

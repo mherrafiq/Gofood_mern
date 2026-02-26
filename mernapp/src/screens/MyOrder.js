@@ -12,7 +12,7 @@ export default function MyOrder() {
 
     const fetchMyOrders = async () => {
         const userEmail = localStorage.getItem("userEmail");
-        
+
         if (!userEmail) {
             alert("Please login first!");
             setLoading(false);
@@ -22,7 +22,7 @@ export default function MyOrder() {
         try {
             console.log("Fetching orders for:", userEmail);
             setLoading(true);
-            
+
             const response = await fetch("http://localhost:5000/api/myorderData", {
                 method: 'POST',
                 headers: {
@@ -54,11 +54,11 @@ export default function MyOrder() {
         return (
             <>
                 <Navbar />
-                <div style={{ 
+                <div style={{
                     background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
-                    minHeight: '100vh', 
-                    display: 'flex', 
-                    justifyContent: 'center', 
+                    minHeight: '100vh',
+                    display: 'flex',
+                    justifyContent: 'center',
                     alignItems: 'center',
                     color: 'white'
                 }}>
@@ -79,9 +79,9 @@ export default function MyOrder() {
         return (
             <>
                 <Navbar />
-                <div style={{ 
+                <div style={{
                     background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
-                    minHeight: '100vh', 
+                    minHeight: '100vh',
                     padding: '80px 20px',
                     color: 'white',
                     display: 'flex',
@@ -112,7 +112,7 @@ export default function MyOrder() {
                         }}>
                             🍽️
                         </div>
-                        <h2 style={{ 
+                        <h2 style={{
                             background: 'linear-gradient(135deg, #28a745, #20c997)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
@@ -122,17 +122,17 @@ export default function MyOrder() {
                         }}>
                             No Orders Yet!
                         </h2>
-                        <p style={{ 
-                            fontSize: '1.1rem', 
+                        <p style={{
+                            fontSize: '1.1rem',
                             color: '#aaa',
                             lineHeight: '1.6',
                             marginBottom: '35px'
                         }}>
-                            Looks like you haven't placed any orders yet.<br/>
+                            Looks like you haven't placed any orders yet.<br />
                             Start exploring our delicious menu and place your first order!
                         </p>
-                        <a href="/" className="btn btn-success" style={{ 
-                            padding: '15px 50px', 
+                        <a href="/" className="btn btn-success" style={{
+                            padding: '15px 50px',
                             fontSize: '1.1rem',
                             fontWeight: '600',
                             borderRadius: '50px',
@@ -142,14 +142,14 @@ export default function MyOrder() {
                             transition: 'all 0.3s ease',
                             textDecoration: 'none'
                         }}
-                        onMouseEnter={(e) => {
-                            e.target.style.transform = 'translateY(-3px)';
-                            e.target.style.boxShadow = '0 15px 40px rgba(40, 167, 69, 0.5)';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.target.style.transform = 'translateY(0)';
-                            e.target.style.boxShadow = '0 10px 30px rgba(40, 167, 69, 0.4)';
-                        }}>
+                            onMouseEnter={(e) => {
+                                e.target.style.transform = 'translateY(-3px)';
+                                e.target.style.boxShadow = '0 15px 40px rgba(40, 167, 69, 0.5)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.target.style.transform = 'translateY(0)';
+                                e.target.style.boxShadow = '0 10px 30px rgba(40, 167, 69, 0.4)';
+                            }}>
                             Browse Menu
                         </a>
                     </div>
@@ -162,15 +162,15 @@ export default function MyOrder() {
     return (
         <>
             <Navbar />
-            <div style={{ 
+            <div style={{
                 background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
-                minHeight: '100vh', 
-                color: 'white', 
-                padding: '50px 20px' 
+                minHeight: '100vh',
+                color: 'white',
+                padding: '50px 20px'
             }}>
                 <div className='container'>
                     <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-                        <h1 style={{ 
+                        <h1 style={{
                             background: 'linear-gradient(135deg, #28a745, #20c997)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
@@ -211,14 +211,14 @@ export default function MyOrder() {
                                         position: 'relative',
                                         overflow: 'hidden'
                                     }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(-8px)';
-                                        e.currentTarget.style.boxShadow = '0 15px 50px rgba(40, 167, 69, 0.2)';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.transform = 'translateY(0)';
-                                        e.currentTarget.style.boxShadow = '0 10px 40px rgba(0,0,0,0.4)';
-                                    }}>
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.transform = 'translateY(-8px)';
+                                            e.currentTarget.style.boxShadow = '0 15px 50px rgba(40, 167, 69, 0.2)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.transform = 'translateY(0)';
+                                            e.currentTarget.style.boxShadow = '0 10px 40px rgba(0,0,0,0.4)';
+                                        }}>
                                         {/* Decorative corner accent */}
                                         <div style={{
                                             position: 'absolute',
@@ -230,9 +230,9 @@ export default function MyOrder() {
                                             borderRadius: '0 16px 0 100%'
                                         }}></div>
 
-                                        <div style={{ 
-                                            display: 'flex', 
-                                            justifyContent: 'space-between', 
+                                        <div style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
                                             alignItems: 'center',
                                             marginBottom: '25px',
                                             paddingBottom: '20px',
@@ -289,14 +289,14 @@ export default function MyOrder() {
                                                         transition: 'all 0.3s ease',
                                                         position: 'relative'
                                                     }}
-                                                    onMouseEnter={(e) => {
-                                                        e.currentTarget.style.transform = 'scale(1.03)';
-                                                        e.currentTarget.style.borderColor = '#28a745';
-                                                    }}
-                                                    onMouseLeave={(e) => {
-                                                        e.currentTarget.style.transform = 'scale(1)';
-                                                        e.currentTarget.style.borderColor = '#333';
-                                                    }}>
+                                                        onMouseEnter={(e) => {
+                                                            e.currentTarget.style.transform = 'scale(1.03)';
+                                                            e.currentTarget.style.borderColor = '#28a745';
+                                                        }}
+                                                        onMouseLeave={(e) => {
+                                                            e.currentTarget.style.transform = 'scale(1)';
+                                                            e.currentTarget.style.borderColor = '#333';
+                                                        }}>
                                                         <div style={{
                                                             position: 'absolute',
                                                             top: '10px',
@@ -308,8 +308,8 @@ export default function MyOrder() {
                                                             boxShadow: '0 0 10px #28a745'
                                                         }}></div>
 
-                                                        <h5 style={{ 
-                                                            color: '#fff', 
+                                                        <h5 style={{
+                                                            color: '#fff',
                                                             marginBottom: '15px',
                                                             fontSize: '1.15rem',
                                                             fontWeight: '700',
@@ -318,8 +318,8 @@ export default function MyOrder() {
                                                             {item.name}
                                                         </h5>
                                                         <div style={{ fontSize: '0.95rem', color: '#bbb' }}>
-                                                            <div style={{ 
-                                                                display: 'flex', 
+                                                            <div style={{
+                                                                display: 'flex',
                                                                 justifyContent: 'space-between',
                                                                 marginBottom: '10px',
                                                                 padding: '8px 0'
@@ -328,8 +328,8 @@ export default function MyOrder() {
                                                                     <span style={{ fontSize: '1.1rem' }}>📦</span>
                                                                     Quantity
                                                                 </span>
-                                                                <strong style={{ 
-                                                                    color: '#fff', 
+                                                                <strong style={{
+                                                                    color: '#fff',
                                                                     fontSize: '1.05rem',
                                                                     background: 'rgba(40, 167, 69, 0.1)',
                                                                     padding: '2px 12px',
@@ -338,8 +338,8 @@ export default function MyOrder() {
                                                                     {item.qty}
                                                                 </strong>
                                                             </div>
-                                                            <div style={{ 
-                                                                display: 'flex', 
+                                                            <div style={{
+                                                                display: 'flex',
                                                                 justifyContent: 'space-between',
                                                                 marginBottom: '12px',
                                                                 padding: '8px 0'
@@ -352,21 +352,21 @@ export default function MyOrder() {
                                                                     {item.size}
                                                                 </strong>
                                                             </div>
-                                                            <div style={{ 
-                                                                display: 'flex', 
+                                                            <div style={{
+                                                                display: 'flex',
                                                                 justifyContent: 'space-between',
                                                                 paddingTop: '12px',
                                                                 borderTop: '2px solid #333',
                                                                 marginTop: '12px'
                                                             }}>
-                                                                <span style={{ 
+                                                                <span style={{
                                                                     fontSize: '1rem',
                                                                     fontWeight: '600',
                                                                     color: '#ccc'
                                                                 }}>
                                                                     Price
                                                                 </span>
-                                                                <strong style={{ 
+                                                                <strong style={{
                                                                     background: 'linear-gradient(135deg, #28a745, #20c997)',
                                                                     WebkitBackgroundClip: 'text',
                                                                     WebkitTextFillColor: 'transparent',
@@ -382,9 +382,9 @@ export default function MyOrder() {
                                             ))}
                                         </div>
 
-                                        <div style={{ 
-                                            borderTop: '2px solid #2a2a2a', 
-                                            paddingTop: '25px', 
+                                        <div style={{
+                                            borderTop: '2px solid #2a2a2a',
+                                            paddingTop: '25px',
                                             marginTop: '25px',
                                             display: 'flex',
                                             justifyContent: 'space-between',
@@ -393,8 +393,8 @@ export default function MyOrder() {
                                             gap: '15px',
                                             background: 'linear-gradient(90deg, rgba(40, 167, 69, 0.05), transparent)'
                                         }}>
-                                            <h5 style={{ 
-                                                color: '#fff', 
+                                            <h5 style={{
+                                                color: '#fff',
                                                 margin: 0,
                                                 fontSize: '1.3rem',
                                                 fontWeight: '700',
@@ -402,7 +402,7 @@ export default function MyOrder() {
                                             }}>
                                                 Order Total
                                             </h5>
-                                            <h3 style={{ 
+                                            <h3 style={{
                                                 background: 'linear-gradient(135deg, #28a745, #20c997)',
                                                 WebkitBackgroundClip: 'text',
                                                 WebkitTextFillColor: 'transparent',

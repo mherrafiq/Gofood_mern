@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+mernapp/node_modules/
+mernapp/backend/node_modules/
+
+# sensitive data
+.env
+mernapp/backend/.env
+mernapp/src/.env
+
+# backup and junk files
+*.txt
+.DS_Store
+
+# build directories
+mernapp/build/
+dist/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
