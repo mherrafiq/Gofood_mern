@@ -177,7 +177,7 @@ export default function Card(props) {
                                 >
                                     {priceOptions.map((option, index) => (
                                         <option key={index} value={option}>
-                                            {option.charAt(0).toUpperCase() + option.slice(1)} - ₹{optionsData[option]}
+                                            {option.charAt(0).toUpperCase() + option.slice(1)} - Rs. {optionsData[option]}
                                         </option>
                                     ))}
                                 </select>
@@ -188,7 +188,7 @@ export default function Card(props) {
                     <div className="d-flex justify-content-between align-items-center p-2 mb-3 rounded" style={{ backgroundColor: "#f8f9fa" }}>
                         <span className="text-muted fw-semibold" style={{ fontSize: "0.9rem" }}>Total Price:</span>
                         <span className="fw-bold" style={{ fontSize: "1.2rem", color: "#28a745" }}>
-                            ₹{calculatePrice()}
+                            Rs. {calculatePrice()}
                         </span>
                     </div>
 

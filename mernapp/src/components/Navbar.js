@@ -11,6 +11,78 @@ export default function Navbar() {
   const [cartView, setCartView] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [showCheckoutMessage, setShowCheckoutMessage] = useState(false);
+  const [profileImage, setProfileImage] = useState("");
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  React.useEffect(() => {
+    if (localStorage.getItem("authToken")) {
+      fetchProfile();
+    }
+  }, []);
+
+  const fetchProfile = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/getuser", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: localStorage.getItem("userEmail") })
+      });
+      const data = await response.json();
+      if (data.success) {
+        setProfileImage(data.user.profileImage);
+      }
+    } catch (error) {
+      console.error("Profile fetch error:", error);
+    }
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('profileImage', file);
+    formData.append('email', localStorage.getItem("userEmail"));
+
+    setUploading(true);
+    try {
+      const response = await fetch("http://localhost:5000/api/uploadimage", {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      if (data.success) {
+        setProfileImage(data.profileImage);
+        alert("Profile image uploaded! ✨");
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert("Upload failed. Please try again.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDeleteImage = async () => {
+    if (!window.confirm("Delete profile picture?")) return;
+
+    try {
+      const response = await fetch("http://localhost:5000/api/deleteimage", {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: localStorage.getItem("userEmail") })
+      });
+      const data = await response.json();
+      if (data.success) {
+        setProfileImage("");
+        alert("Profile image deleted! 🗑️");
+      }
+    } catch (error) {
+      alert("Delete failed.");
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -307,13 +379,18 @@ export default function Navbar() {
 
             <div className='d-flex align-items-center me-3'>
               {(localStorage.getItem("authToken")) ?
-                <div className='d-flex align-items-center' style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  padding: '5px 15px',
-                  borderRadius: '25px',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  backdropFilter: 'blur(5px)'
-                }}>
+                <div 
+                  className='d-flex align-items-center' 
+                  onClick={() => setShowProfileModal(true)}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    padding: '5px 15px',
+                    borderRadius: '25px',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    backdropFilter: 'blur(5px)',
+                    cursor: 'pointer'
+                  }}
+                >
                   <div style={{
                     width: '32px',
                     height: '32px',
@@ -324,15 +401,23 @@ export default function Navbar() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     marginRight: '10px',
-                    boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                    overflow: 'hidden'
                   }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
+                    {profileImage ? (
+                      <img 
+                        src={`http://localhost:5000/uploads/${profileImage}`} 
+                        alt="Profile" 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                      />
+                    ) : (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                    )}
                   </div>
                   <span style={{
-                    cursor: "default",
                     color: "#fff",
                     fontWeight: '600',
                     fontSize: '0.95rem'
@@ -367,6 +452,75 @@ export default function Navbar() {
           </div>
         </div>
       </nav >
+
+      {showProfileModal && (
+        <Modal onClose={() => setShowProfileModal(false)}>
+          <div className='p-4 text-center'>
+            <div className="modal-header-custom mb-4">
+              <h2 className='text-center mb-0'>👤 Manage Profile</h2>
+            </div>
+            
+            <div className="mb-4">
+              <div style={{
+                width: '120px',
+                height: '120px',
+                borderRadius: '50%',
+                margin: '0 auto',
+                border: '4px solid #28a745',
+                overflow: 'hidden',
+                backgroundColor: '#f8f9fa',
+                position: 'relative'
+              }}>
+                {profileImage ? (
+                  <img 
+                    src={`http://localhost:5000/uploads/${profileImage}`} 
+                    alt="Current Profile" 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                  />
+                ) : (
+                  <div style={{ fontSize: '3rem', marginTop: '20px' }}>👤</div>
+                )}
+                {uploading && (
+                  <div style={{
+                    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                  }}>
+                    <div className="spinner-border text-success" role="status"></div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <h4 className="fw-bold mb-4">{localStorage.getItem("userName")}</h4>
+
+            <div className="d-flex flex-column gap-3 mx-auto" style={{ maxWidth: '300px' }}>
+              <label className="btn btn-success d-block py-2 fw-bold" style={{ borderRadius: '10px', cursor: 'pointer' }}>
+                {profileImage ? "Change Picture" : "Upload Picture"}
+                <input type="file" hidden onChange={handleImageUpload} accept="image/*" disabled={uploading} />
+              </label>
+
+              {profileImage && (
+                <button 
+                  className="btn btn-outline-danger py-2 fw-bold" 
+                  style={{ borderRadius: '10px' }}
+                  onClick={handleDeleteImage}
+                  disabled={uploading}
+                >
+                  Delete Picture
+                </button>
+              )}
+              
+              <button 
+                className="btn btn-secondary py-2 fw-bold" 
+                style={{ borderRadius: '10px' }}
+                onClick={() => setShowProfileModal(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </Modal>
+      )}
 
       {cartView && (
         <Modal onClose={() => setCartView(false)}>
@@ -454,7 +608,7 @@ export default function Navbar() {
                         <td style={{ padding: '15px' }}>{food.qty}</td>
                         <td style={{ padding: '15px' }}>{food.size}</td>
                         <td style={{ padding: '15px', fontWeight: '700', color: '#28a745' }}>
-                          ₹{food.price}
+                          Rs. {food.price}
                         </td>
                         <td style={{ padding: '15px' }}>
                           <button
@@ -483,7 +637,7 @@ export default function Navbar() {
                     color: '#28a745',
                     margin: 0
                   }}>
-                    Total: ₹{totalPrice}/-
+                    Total: Rs. {totalPrice}/-
                   </h3>
                 </div>
 

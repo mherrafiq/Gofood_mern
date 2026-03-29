@@ -100,7 +100,7 @@ export default function Cart() {
                   <td>{food.name}</td>
                   <td>{food.qty}</td>
                   <td>{food.size}</td>
-                  <td>₹{food.price}</td>
+                  <td>Rs. {food.price}</td>
                   <td>
                     <button
                       type="button"
@@ -117,7 +117,7 @@ export default function Cart() {
           </table>
 
           <div>
-            <h1 className="fs-2">Total Price: ₹{totalPrice}/-</h1>
+            <h1 className="fs-2">Total Price: Rs. {totalPrice}/-</h1>
           </div>
 
           <div>

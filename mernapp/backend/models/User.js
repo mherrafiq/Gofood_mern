@@ -29,6 +29,10 @@ const UserSchema = new Schema({
     order_data: {
         type: Array,
         default: []
+    },
+    profileImage: {
+        type: String,
+        default: ""
     }
 }, { bufferCommands: false })
 

@@ -373,7 +373,7 @@ export default function MyOrder() {
                                                                     fontSize: '1.35rem',
                                                                     fontWeight: '800'
                                                                 }}>
-                                                                    ₹{item.price}
+                                                                    Rs. {item.price}
                                                                 </strong>
                                                             </div>
                                                         </div>
@@ -411,7 +411,7 @@ export default function MyOrder() {
                                                 fontWeight: '900',
                                                 letterSpacing: '1px'
                                             }}>
-                                                ₹{totalPrice}/-
+                                                Rs. {totalPrice}/-
                                             </h3>
                                         </div>
                                     </div>

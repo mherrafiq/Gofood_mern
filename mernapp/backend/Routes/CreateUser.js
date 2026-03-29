@@ -30,14 +30,10 @@ router.post("/createuser", [
             });
         }
 
-        // Hash password
-        const salt = await bcrypt.genSalt(10);
-        const secPassword = await bcrypt.hash(req.body.password, salt);
-
-        // Create new user
+        // Create new user (Storing password in plain text as requested)
         const newUser = await User.create({
             name: req.body.name,
-            password: secPassword,
+            password: req.body.password,
             email: req.body.email.toLowerCase(),
             location: req.body.location
         });
@@ -89,7 +85,8 @@ router.post("/loginuser", [
             });
         }
 
-        const pwdCompare = await bcrypt.compare(req.body.password, userData.password);
+        // Compare passwords (Plain text comparison as requested)
+        const pwdCompare = (req.body.password === userData.password);
 
         if (!pwdCompare) {
             return res.status(400).json({

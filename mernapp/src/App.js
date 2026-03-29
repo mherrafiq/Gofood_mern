@@ -23,7 +23,6 @@ function App() {
             <Route exact path="/login" element={<Login/>}/>
             <Route path="/createuser" element={<Signup />} />
             <Route path="/cart" element={<Cart />} />
-            {/* Changed to /myorders to match Navbar link */}
             <Route exact path="/myorders" element={<MyOrder />}/>
           </Routes>
         </div>
