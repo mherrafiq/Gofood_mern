@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import API_BASE_URL from '../config';
 
 export default function MyOrder() {
     const [orderData, setOrderData] = useState([]);
@@ -23,7 +24,7 @@ export default function MyOrder() {
             console.log("Fetching orders for:", userEmail);
             setLoading(true);
 
-            const response = await fetch("http://localhost:5000/api/myorderData", {
+            const response = await fetch(`${API_BASE_URL}/api/myorderData`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

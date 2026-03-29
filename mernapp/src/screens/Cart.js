@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useCart, useDispatchCart } from '../components/ContextReducer';
+import API_BASE_URL from '../config';
 
 export default function Cart() {
   const cartItems = useCart();
@@ -23,7 +24,7 @@ export default function Cart() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/orderData", {
+      const response = await fetch(`${API_BASE_URL}/api/orderData`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

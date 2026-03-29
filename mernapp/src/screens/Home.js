@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import Card from '../components/Card'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import API_BASE_URL from '../config';
 
 export default function Home() {
   const [search, setSearch] = useState('');
@@ -15,7 +16,7 @@ export default function Home() {
   const loadData = async () => {
     try {
       setLoading(true);
-      let response = await fetch("http://localhost:5000/api/foodData", {
+      let response = await fetch(`${API_BASE_URL}/api/foodData`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'

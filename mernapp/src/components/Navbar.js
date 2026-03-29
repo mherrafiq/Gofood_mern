@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Badge } from 'react-bootstrap'
 import { useCart, useDispatchCart } from './ContextReducer'
 import Modal from './Modal'
+import API_BASE_URL from '../config'
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function Navbar() {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/getuser", {
+      const response = await fetch(`${API_BASE_URL}/api/getuser`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: localStorage.getItem("userEmail") })
@@ -47,7 +48,7 @@ export default function Navbar() {
 
     setUploading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/uploadimage", {
+      const response = await fetch(`${API_BASE_URL}/api/uploadimage`, {
         method: 'POST',
         body: formData
       });
@@ -69,7 +70,7 @@ export default function Navbar() {
     if (!window.confirm("Delete profile picture?")) return;
 
     try {
-      const response = await fetch("http://localhost:5000/api/deleteimage", {
+      const response = await fetch(`${API_BASE_URL}/api/deleteimage`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: localStorage.getItem("userEmail") })
@@ -406,7 +407,7 @@ export default function Navbar() {
                   }}>
                     {profileImage ? (
                       <img 
-                        src={`http://localhost:5000/uploads/${profileImage}`} 
+                        src={`${API_BASE_URL}/uploads/${profileImage}`} 
                         alt="Profile" 
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                       />

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import API_BASE_URL from '../config'
 
 export default function Signup() {
     const [credentials, setCredentials] = useState({ 
@@ -81,7 +82,7 @@ export default function Signup() {
         }
 
         try {
-            const response = await fetch("http://localhost:5000/api/createuser", {
+            const response = await fetch(`${API_BASE_URL}/api/createuser`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
