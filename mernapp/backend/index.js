@@ -21,6 +21,8 @@ app.use(cors({
   credentials: true
 }));
 
+const serverless = require('serverless-http');
+
 app.use('/api', require("./Routes/CreateUser"));
 app.use('/api', require("./Routes/DisplayData"));
 app.use('/api', require("./Routes/OrderData"));
@@ -30,8 +32,15 @@ app.use('/api', require("./Routes/UserActions"));
 const path = require('path');
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.listen(port, () => {
-  console.log(`🚀 Server running on port ${port}`);
-});
+// ✅ Serverless Handler
+module.exports.handler = serverless(app);
+
+// ✅ Local Server (Only runs locally, not in Netlify)
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`🚀 Server running locally on port ${port}`);
+  });
+}
 
 module.exports = app;
+
