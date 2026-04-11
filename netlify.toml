@@ -1,5 +1,5 @@
 [build]
-  command = "CI=false npm install --prefix mernapp --legacy-peer-deps && CI=false npm run build --prefix mernapp"
+  command = "npm install --prefix mernapp --legacy-peer-deps && npm install --prefix mernapp/backend && CI=false npm run build --prefix mernapp"
   publish = "mernapp/build"
 
 [functions]
