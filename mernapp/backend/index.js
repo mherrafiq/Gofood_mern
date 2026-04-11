@@ -32,9 +32,6 @@ app.use('/api', require("./Routes/UserActions"));
 const path = require('path');
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ✅ Serverless Handler
-module.exports.handler = serverless(app);
-
 // ✅ Local Server (Only runs locally, not in Netlify)
 if (process.env.NODE_ENV !== 'production') {
   app.listen(port, () => {
@@ -42,5 +39,8 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
+// ✅ Correct Exports for Netlify
 module.exports = app;
+module.exports.handler = serverless(app);
+
 
