@@ -4,7 +4,7 @@ const User = require('../models/User');
 const { body, validationResult } = require('express-validator');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const jwtSecret = "MynameisEndtoEndYoutubeChannel$*"
+const jwtSecret = process.env.JWT_SECRET || "MynameisEndtoEndYoutubeChannel$*"
 
 
 // CREATE USER

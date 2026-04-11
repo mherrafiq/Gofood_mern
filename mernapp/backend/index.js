@@ -30,10 +30,8 @@ app.use('/api', require("./Routes/UserActions"));
 const path = require('path');
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(port, () => {
-    console.log(`🚀 Server running on port ${port}`);
-  });
-}
+app.listen(port, () => {
+  console.log(`🚀 Server running on port ${port}`);
+});
 
 module.exports = app;

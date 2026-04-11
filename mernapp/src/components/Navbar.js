@@ -112,7 +112,7 @@ export default function Navbar() {
     console.log('Finalizing order for:', userEmail);
 
     try {
-      let response = await fetch("http://localhost:5000/api/orderData", {
+      let response = await fetch(`${API_BASE_URL}/api/orderData`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -474,7 +474,7 @@ export default function Navbar() {
               }}>
                 {profileImage ? (
                   <img 
-                    src={`http://localhost:5000/uploads/${profileImage}`} 
+                    src={`${API_BASE_URL}/uploads/${profileImage}`} 
                     alt="Current Profile" 
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                   />
