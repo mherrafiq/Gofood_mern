@@ -5,7 +5,15 @@ const app = express();
 const port = process.env.PORT || 5000;
 const mongoDB = require("./db");
 
-mongoDB(); // connect MongoDB
+// ✅ Middleware to ensure MongoDB is connected before handling requests (Crucial for Serverless)
+app.use(async (req, res, next) => {
+  try {
+    await mongoDB();
+    next();
+  } catch (err) {
+    res.status(500).send("Database connection error");
+  }
+});
 
 app.get('/', (req, res) => {
   res.send('Hello World from backend!');

@@ -5,6 +5,10 @@ mongoose.set('bufferCommands', false); // Global disable
 const mongoURI = process.env.MONGO_URI;
 
 const mongoDB = async () => {
+  if (global.food_items && global.food_items.length > 0) {
+    return; // Fast return if data is already in memory (warm start)
+  }
+
   console.log("Connecting to MongoDB...");
   console.log("URI being used:", mongoURI);
   try {
@@ -25,6 +29,7 @@ const mongoDB = async () => {
     global.foodCategory = foodCategory;
 
     console.log("✅ Food items and categories fetched successfully");
+
   } catch (error) {
     console.error('❌ MongoDB connection error:', error.message);
     if (
