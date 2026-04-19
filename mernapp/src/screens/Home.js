@@ -225,7 +225,8 @@ const CarouselSection = React.memo(({ search, setSearch }) => {
           }
 
           input::placeholder {
-            color: #cbd5e0 !important;
+            color: #000000 !important;
+            font-weight: 800 !important;
             opacity: 1;
           }
 

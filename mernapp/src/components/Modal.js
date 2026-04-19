@@ -7,14 +7,15 @@ const MODAL_STYLES = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   backgroundColor: '#FFF',
-  padding: '20px',
-  zIndex: 1000,
-  borderRadius: '10px',
-  maxWidth: '800px',
-  width: '90%',
-  maxHeight: '80vh',
+  padding: 'clamp(10px, 3vw, 20px)',
+  zIndex: 3000,
+  borderRadius: '16px',
+  maxWidth: '850px',
+  width: '95%',
+  maxHeight: '90vh',
   overflowY: 'auto',
-  boxShadow: '0 5px 20px rgba(0,0,0,0.3)'
+  boxShadow: '0 20px 50px rgba(0,0,0,0.4)',
+  border: '1px solid rgba(255,255,255,0.1)'
 };
 
 const OVERLAY_STYLES = {
@@ -24,7 +25,7 @@ const OVERLAY_STYLES = {
   right: 0,
   bottom: 0,
   backgroundColor: 'rgba(0, 0, 0, .7)',
-  zIndex: 1000
+  zIndex: 3000,
 };
 
 export default function Modal({ children, onClose }) {

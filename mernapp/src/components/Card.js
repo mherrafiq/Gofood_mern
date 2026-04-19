@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useDispatchCart } from './ContextReducer';
 
 export default function Card(props) {
@@ -6,9 +6,9 @@ export default function Card(props) {
     const [quantity, setQuantity] = useState(1);
     const [size, setSize] = useState('');
     
-    // Get options from props
-    const optionsData = props.options && props.options.length > 0 ? props.options[0] : {};
-    const priceOptions = Object.keys(optionsData);
+    // Get options from props - memoized to prevent unnecessary re-renders and state resets
+    const optionsData = useMemo(() => props.options && props.options.length > 0 ? props.options[0] : {}, [props.options]);
+    const priceOptions = useMemo(() => Object.keys(optionsData), [optionsData]);
     
     const handleAddToCart = async () => {
         const itemId = props._id || props.id || `${props.name}-${Date.now()}`;
@@ -39,7 +39,7 @@ export default function Card(props) {
 
     const isPizza = (props.CategoryName && props.CategoryName.toLowerCase().includes('pizza'));
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (priceOptions.length > 0) {
             setSize(priceOptions[0]);
         } else if (isPizza) {
@@ -102,11 +102,12 @@ export default function Card(props) {
     return (
         <div className="d-flex justify-content-center mb-4">
             <div 
-                className="card shadow-sm border-0" 
+                className="card shadow-sm border-0 w-100" 
                 style={{ 
-                    width: "20rem", 
+                    maxWidth: "340px", 
                     borderRadius: "12px",
-                    overflow: "hidden"
+                    overflow: "hidden",
+                    margin: "0 auto"
                 }}
             >
                 <div style={{ position: "relative", overflow: "hidden", height: "200px", backgroundColor: "#f0f0f0" }}>

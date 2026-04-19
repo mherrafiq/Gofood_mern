@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Badge } from 'react-bootstrap'
 import { useCart, useDispatchCart } from './ContextReducer'
 import Modal from './Modal'
 import API_BASE_URL from '../config'
 
 export default function Navbar() {
-  const navigate = useNavigate();
   const cartItems = useCart();
   const dispatch = useDispatchCart();
   const [cartView, setCartView] = useState(false);
@@ -87,7 +86,9 @@ export default function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    navigate("/login");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userName");
+    window.location.href = "/";
   }
 
   const handleRemove = (index) => {
@@ -267,6 +268,44 @@ export default function Navbar() {
             box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4) !important;
           }
 
+          .btn-login {
+            background: #145c32 !important;
+            color: #fff !important;
+            border: 2px solid #1e7e34 !important;
+            padding: 8px 25px !important;
+            border-radius: 10px !important;
+            font-weight: 700 !important;
+            text-decoration: none !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+          }
+
+          .btn-login:hover {
+            background: transparent !important;
+            color: #fff !important;
+            border-color: #fff !important;
+            transform: translateY(-2px);
+          }
+
+          .btn-signup {
+            background: #145c32 !important;
+            color: #fff !important;
+            border: 2px solid #145c32 !important;
+            padding: 8px 25px !important;
+            border-radius: 10px !important;
+            font-weight: 700 !important;
+            text-decoration: none !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+          }
+
+          .btn-signup:hover {
+            background: transparent !important;
+            color: #fff !important;
+            border-color: #fff !important;
+            transform: translateY(-2px);
+          }
+
           .cart-badge {
             animation: bounceIn 0.5s ease;
           }
@@ -338,11 +377,35 @@ export default function Navbar() {
             margin-bottom: 20px;
           }
 
-          @media (max-width: 768px) {
+          @media (max-width: 991px) {
+            .navbar-collapse {
+              background: rgba(40, 167, 69, 0.98);
+              padding: 20px;
+              border-radius: 15px;
+              margin-top: 10px;
+              box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            }
             .btn-cart,
-            .btn-logout {
-              margin: 5px 0 !important;
+            .btn-logout,
+            .btn-login,
+            .btn-signup {
+              margin: 8px 0 !important;
               width: 100%;
+              text-align: center;
+              display: block;
+            }
+            .profile-section-mobile {
+              margin-bottom: 20px !important;
+              margin-right: 0 !important;
+              justify-content: center;
+              width: 100%;
+            }
+            .navbar-nav {
+              text-align: center;
+              margin-bottom: 20px !important;
+            }
+            .nav-link-custom {
+              margin: 5px 0;
             }
           }
         `}
@@ -371,85 +434,96 @@ export default function Navbar() {
                   🏠 Home
                 </Link>
               </li>
-              <li className='nav-item'>
-                <Link className="nav-link nav-link-custom" to="/myorders">
-                  📦 My Orders
-                </Link>
-              </li>
-            </ul>
-
-            <div className='d-flex align-items-center me-3'>
               {(localStorage.getItem("authToken")) ?
-                <div 
-                  className='d-flex align-items-center' 
-                  onClick={() => setShowProfileModal(true)}
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    padding: '5px 15px',
-                    borderRadius: '25px',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    backdropFilter: 'blur(5px)',
-                    cursor: 'pointer'
-                  }}
-                >
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '50%',
-                    backgroundColor: '#fff',
-                    color: '#28a745',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginRight: '10px',
-                    boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-                    overflow: 'hidden'
-                  }}>
-                    {profileImage ? (
-                      <img 
-                        src={`${API_BASE_URL}/uploads/${profileImage}`} 
-                        alt="Profile" 
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                      />
-                    ) : (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                      </svg>
-                    )}
-                  </div>
-                  <span style={{
-                    color: "#fff",
-                    fontWeight: '600',
-                    fontSize: '0.95rem'
-                  }}>
-                    {localStorage.getItem("userName") || "User"}
-                  </span>
-                </div>
+                <li className='nav-item'>
+                  <Link className="nav-link nav-link-custom" to="/myorders">
+                    📦 My Orders
+                  </Link>
+                </li>
                 : ""
               }
-            </div>
+            </ul>
 
-            <div className='d-flex flex-column flex-lg-row gap-2'>
-              <button
-                className='btn btn-cart'
-                onClick={() => setCartView(true)}
-              >
-                🛒 My Cart
-                {cartItems.length > 0 && (
-                  <Badge pill bg="danger" className="ms-2 cart-badge">
-                    {cartItems.length}
-                  </Badge>
-                )}
-              </button>
+            {(!localStorage.getItem("authToken")) ?
+              <div className='d-flex flex-column flex-lg-row gap-2'>
+                <Link className='btn btn-login' to="/login">
+                  🔐 Login
+                </Link>
+                <Link className='btn btn-signup' to="/createuser">
+                  📝 Signup
+                </Link>
+              </div>
+              :
+              <div className='d-flex flex-column flex-lg-row gap-2 align-items-center'>
+                <div className='profile-section-mobile'>
+                  <div 
+                    className='d-flex align-items-center' 
+                    onClick={() => setShowProfileModal(true)}
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      padding: '5px 15px',
+                      borderRadius: '25px',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      backdropFilter: 'blur(5px)',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <div style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      backgroundColor: '#fff',
+                      color: '#28a745',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginRight: '10px',
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                      overflow: 'hidden'
+                    }}>
+                      {profileImage ? (
+                        <img 
+                          src={`${API_BASE_URL}/uploads/${profileImage}`} 
+                          alt="Profile" 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        />
+                      ) : (
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                      )}
+                    </div>
+                    <span style={{
+                      color: "#fff",
+                      fontWeight: '600',
+                      fontSize: '0.95rem'
+                    }}>
+                      {localStorage.getItem("userName") || "User"}
+                    </span>
+                  </div>
+                </div>
 
-              <button
-                className='btn btn-logout'
-                onClick={handleLogout}
-              >
-                🚪 Logout
-              </button>
-            </div>
+                <button
+                  className='btn btn-cart'
+                  onClick={() => setCartView(true)}
+                >
+                  🛒 My Cart
+                  {cartItems.length > 0 && (
+                    <Badge pill bg="danger" className="ms-2 cart-badge">
+                      {cartItems.length}
+                    </Badge>
+                  )}
+                </button>
+
+                <button
+                  className='btn btn-logout'
+                  onClick={handleLogout}
+                >
+                  🚪 Logout
+                </button>
+              </div>
+            }
           </div>
         </div>
       </nav >
@@ -497,7 +571,7 @@ export default function Navbar() {
             <div className="d-flex flex-column gap-3 mx-auto" style={{ maxWidth: '300px' }}>
               <label className="btn btn-success d-block py-2 fw-bold" style={{ borderRadius: '10px', cursor: 'pointer' }}>
                 {profileImage ? "Change Picture" : "Upload Picture"}
-                <input type="file" hidden onChange={handleImageUpload} accept="image/*" disabled={uploading} />
+                <input type="file" style={{ display: 'none' }} onChange={handleImageUpload} accept="image/*" disabled={uploading} />
               </label>
 
               {profileImage && (
@@ -644,7 +718,7 @@ export default function Navbar() {
 
                 <div className='text-center'>
                   <button
-                    className='btn btn-success btn-lg px-5 py-3'
+                    className='btn btn-success btn-lg px-5 py-3 w-100'
                     onClick={handleCheckOut}
                     style={{
                       borderRadius: '12px',
