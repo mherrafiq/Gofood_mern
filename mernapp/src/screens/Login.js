@@ -100,7 +100,8 @@ export default function Login() {
                 // Success - store auth data
                 localStorage.setItem("userEmail", credentials.email);
                 localStorage.setItem("authToken", json.authToken);
-                localStorage.setItem("userName", json.userName || credentials.email.split("@")[0]);
+                localStorage.setItem("userName", json.userName && json.userName !== "undefined" ? json.userName : credentials.email.split("@")[0]);
+
 
                 // Show success message
                 setSuccessMessage("Login successful! Redirecting...");

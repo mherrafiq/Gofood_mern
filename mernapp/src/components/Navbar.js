@@ -29,8 +29,8 @@ export default function Navbar() {
         body: JSON.stringify({ email: localStorage.getItem("userEmail") })
       });
       const data = await response.json();
-      if (data.success) {
-        setProfileImage(data.user.profileImage);
+      if (data.success && data.user) {
+        setProfileImage(data.user.profileImage || "");
       }
     } catch (error) {
       console.error("Profile fetch error:", error);
@@ -53,10 +53,10 @@ export default function Navbar() {
       });
       const data = await response.json();
       if (data.success) {
-        setProfileImage(data.profileImage);
+        setProfileImage(data.profileImage || "");
         alert("Profile image uploaded! ✨");
       } else {
-        alert(data.message);
+        alert(data.message || "Upload failed");
       }
     } catch (error) {
       alert("Upload failed. Please try again.");
@@ -499,7 +499,9 @@ export default function Navbar() {
                       fontWeight: '600',
                       fontSize: '0.95rem'
                     }}>
-                      {localStorage.getItem("userName") || "User"}
+                      {localStorage.getItem("userName") && localStorage.getItem("userName") !== "undefined" 
+                        ? localStorage.getItem("userName") 
+                        : "User"}
                     </span>
                   </div>
                 </div>
@@ -566,7 +568,11 @@ export default function Navbar() {
               </div>
             </div>
 
-            <h4 className="fw-bold mb-4">{localStorage.getItem("userName")}</h4>
+            <h4 className="fw-bold mb-4">
+              {localStorage.getItem("userName") && localStorage.getItem("userName") !== "undefined" 
+                ? localStorage.getItem("userName") 
+                : "User"}
+            </h4>
 
             <div className="d-flex flex-column gap-3 mx-auto" style={{ maxWidth: '300px' }}>
               <label className="btn btn-success d-block py-2 fw-bold" style={{ borderRadius: '10px', cursor: 'pointer' }}>
