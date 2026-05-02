@@ -483,7 +483,7 @@ export default function Navbar() {
                     }}>
                       {profileImage ? (
                         <img 
-                          src={`${API_BASE_URL}/uploads/${profileImage}`} 
+                          src={profileImage.startsWith('http') ? profileImage : `${API_BASE_URL}/uploads/${profileImage}`} 
                           alt="Profile" 
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                         />
@@ -550,7 +550,7 @@ export default function Navbar() {
               }}>
                 {profileImage ? (
                   <img 
-                    src={`${API_BASE_URL}/uploads/${profileImage}`} 
+                    src={profileImage.startsWith('http') ? profileImage : `${API_BASE_URL}/uploads/${profileImage}`} 
                     alt="Current Profile" 
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                   />
